@@ -15,15 +15,3 @@ type Display interface {
 	Draw(im *image.RGBA) error
 	Size() image.Point
 }
-
-/*
-type ViewPort struct {
-	canvas.Canvas
-	display Display
-	im      *image.RGBA
-}
-
-func (dc *DisplayCanvas) Show() {
-	dc.display.Draw(dc.im)
-}
-*/

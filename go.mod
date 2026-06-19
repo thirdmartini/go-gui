@@ -17,6 +17,7 @@ require (
 )
 
 require (
+	github.com/bbredesen/go-vk v1.3.290-0.3.3 // indirect
 	golang.org/x/net v0.56.0 // indirect
 	golang.org/x/sync v0.21.0 // indirect
 )

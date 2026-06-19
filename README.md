@@ -1,6 +1,7 @@
 # go-gui
 
-Toolkit for making raw UI Stuff in golang for use with RPIs and touch displays.
+Toolkit for making raw UI Stuff in golang for use with RPIs and touch displays.  This code "should work" on regular PCs 
+running linux. ( or every when using the VNC driver )  But I've only personally tested this on RPI4/RPI5 and MacOS. 
 
 # Building
 
@@ -23,22 +24,23 @@ on an RPI.
 ![VNC Mode](assets/vnc.png)
 
 ```aiignore
-roland@rpi go-gui % ./build/demo -vnc
+roland@rpi go-gui % ./build/demo --driver=vnc
 
 2026/06/18 22:12:11 Listening on: vnc://localhost:9000
 ...
 ```
-I've tested this with TigerVNC on macOS.  It does NOT work with the builtin VNC viewer on the mac as the server does 
+I've tested this with TigerVNC on MacOS.  It does NOT work with the builtin VNC viewer on the mac as the server does 
 not support authentication required by the MacOS Builting VNC viewer.  Use TigerVNC from brew (or add the missing vnc features.)
 
-## Real Mode
+## Linux Framebuffer Mode
 
 Note that the demo app is configured for the [WaveShare 11.9" touch display](https://www.amazon.com/dp/B092LSDMP8) 
 which has a resolution of 320x1480.  The demo is running it as a 1480x320 by setting rotation to 90degrees in the 
 demo code. 
 
+
 ```aiignore
-roland@rpi go-gui % sudo ./build/demo
+roland@rpi go-gui % sudo ./build/demo --driver=framebuffer
  
 Frame buffer opened
 Frame buffer mmap
@@ -47,16 +49,45 @@ FB Acquired
 ...
 ```
 
-Short Video:
+Note: Framebuffer mode works on RPI3, RPI4
+
+## Linux DRM/DRI Mode
+
+This mode uses the linux kernel DRM (Direct Rendering Manager) and works on more recent kernels and RPI devices like the RPI5.
+
+```aiignore
+roland@rpi go-gui % sudo ./build/demo --driver=dri
+
+Found connected connector: 33 (HDMI) [1]
+Found connected connector: 33 (HDMI) modes:2
+DRM fd=4 Mode 1480x320 @ 59Hz
+2026/06/19 08:20:21 FB:0 -> 680 0x7ffeba52c000 1894400
+...
+```
+
+
+# Short Video
 
 [![Watch the video](assets/youtube.png)](https://www.youtube.com/watch?v=aj_DWQwIO-I)
+
+
+# The Code
+
+The code is ugly and likely to change a lot, so beware. I suggest you clone this repo amd do your own thing if you want 
+minimal headaches with breaking changes. Also feel free to "borrow" anything you se in here.  Getting the Framebuffer and DRM
+code to work in golang was kind of a pain.
+
+* [pkg/app](pkg/app/) Contains widgets used by the demo app
+* [pkg/drivers/display](pkg/drivers/display/) Contains the display driver code (vnc,dri,framebuffer)
+* [pkg/ux]([pkg/ux/) Contains generic UX widgets
+
 
 
 # Annoying Bits
 
 ## Waveshare 11.9" Touch Display 320x1480
 
-To get this to work on an RPI4:  ( Note: RPI5 is different )
+To get this to work on an RPI4:  ( Note: RPI5 use --driver=dri  )
 ```/boot/firmware/config.txt
 
 # DISABLE DT Overlay

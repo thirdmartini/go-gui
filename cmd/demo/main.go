@@ -9,6 +9,7 @@ import (
 	"github.com/thirdmartini/gogui/pkg/app"
 	"github.com/thirdmartini/gogui/pkg/app/views"
 	"github.com/thirdmartini/gogui/pkg/app/widgets"
+	"github.com/thirdmartini/gogui/pkg/drivers/display/linux/drm"
 	"github.com/thirdmartini/gogui/pkg/drivers/input/controller/keyboard"
 	"github.com/thirdmartini/gogui/pkg/ux/themes"
 
@@ -64,19 +65,21 @@ func mustInitializeDemo(listenAddress string, width, height int) ([]display.Disp
 }
 
 func main() {
-	vncFlag := flag.Bool("vnc", false, "vnc mode")
+	driverFlag := flag.String("driver", "vnc", "display driver [vnc, framebuffer, drm]")
 	flag.Parse()
 
 	var displays []display.Display
 	var events []ux.EventListener
 
-	if *vncFlag {
+	switch *driverFlag {
+	case "vnc":
 		// NOTE: this vnc server is really simple stupid but is compatible with TigerVNC
 		// Start a vnc server that will act like the gui display
 		// this is nice and useful for testing the ui without a linux FB device
 		// note that VNC also provides an event source
+
 		displays, events = mustInitializeDemo(":9000", 1480, 320)
-	} else {
+	case "framebuffer":
 		// For this demo I'm using a RPI4 with an HDMI touch Display that is 320x1480 but I want to use it
 		// as a 1480x320 display
 		fbDevs := []FrameBufferDevice{
@@ -91,6 +94,16 @@ func main() {
 		if len(displays) == 0 {
 			panic("no framebuffers found  ( try running with --vnc for a demo )")
 		}
+
+	case "dri", "drm":
+		d, err := drm.NewDisplay("/dev/dri/card1")
+		if err != nil {
+			panic(err)
+		}
+		d.WithRotation(display.Rotation90)
+		displays = append(displays, d)
+	default:
+		fmt.Errorf("Unknon driver %s\n", *driverFlag)
 	}
 
 	kb, err := keyboard.NewKeyboard()
