@@ -1,0 +1,53 @@
+package ux
+
+const (
+	ButtonNone  = 0
+	ButtonOne   = 1
+	ButtonTwo   = 2
+	ButtonThree = 3
+
+	StickUp    = 101
+	StickDown  = 102
+	StickLeft  = 103
+	StickRight = 104
+	StickClick = 105
+
+	KeyPressUp    = 101
+	KeyPressDown  = 102
+	KeyPressLeft  = 103
+	KeyPressRight = 104
+)
+
+const (
+	EventTypeSystem      = 0x1
+	EventTypeButton      = 0x2
+	EventTypeKey         = 0x3
+	EventTypeInput       = 0x4
+	EventTypeApplication = 0x10
+	EventTypeUser        = 0x100
+)
+
+type Icon struct {
+}
+
+type Event struct {
+	Type    uint64
+	Kind    uint64
+	Content interface{}
+	Done    func(err error)
+}
+
+type EventHandler interface {
+	OnEvent(ev *Event) bool
+}
+
+type EventListener interface {
+	Listen(OnEvent func(ev *Event)) error
+}
+
+func NewKeyPressEvent(key int) *Event {
+	return &Event{
+		Type: EventTypeKey,
+		Kind: uint64(key),
+	}
+}

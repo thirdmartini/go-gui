@@ -1,0 +1,24 @@
+{
+  "ping.edge": {
+    "type": "ping",
+    "description": "edge",
+    "config": {
+      "address": "65.156.143.73"
+    }
+  },
+  "temperature.ambient": {
+    "type": "tempur",
+    "config": {
+      "device": "/dev/hidraw3"
+    }
+  },
+  "snmp.edge": {
+    "type": "snmp",
+    "config": {
+      "address": "10.0.0.253",
+      "in": "1.3.6.1.2.1.2.2.1.10.2",
+      "out": "1.3.6.1.2.1.2.2.1.16.2",
+      "interval": 10
+    }
+  }
+}

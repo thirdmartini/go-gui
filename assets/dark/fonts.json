@@ -1,0 +1,18 @@
+{
+  "default:large": {
+    "Font": "default.ttf",
+    "Size": 24
+  },
+  "default:header": {
+    "Font": "default.ttf",
+    "Size": 16
+  },
+  "default:dialog": {
+    "Font": "default.ttf",
+    "Size": 14
+  },
+  "default:graph-label": {
+    "Font": "default.ttf",
+    "Size": 12
+  }
+}
