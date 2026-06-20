@@ -19,6 +19,7 @@ const (
 	AlignDefault = 0x0
 	AlignLeft    = 0x0
 	AlignRight   = 0x1
+	AlignCenter  = 0x2
 	AlignTop     = 0x0
 	AlignBottom  = 0x2
 )

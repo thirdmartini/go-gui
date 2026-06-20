@@ -52,7 +52,7 @@ func (ucg *UserColorGroup) GetColor(name string) color.Color {
 	if c, ok := ucg.byName[name]; ok {
 		return c
 	}
-	log.Fatalf("no color named [%s]", name)
+	log.Panicf("no color named [%s]", name)
 	return nil
 }
 
@@ -61,15 +61,17 @@ func (ucg *UserColorGroup) NewColor(palette color.Palette, name string, hex stri
 		if c, ok := ucg.byName[name]; ok {
 			return c
 		}
-	}
-
-	if c, ok := ucg.byHex[hex]; ok {
-		return c
+	} else {
+		// if the name is blank look it up by hex color
+		if c, ok := ucg.byHex[hex]; ok {
+			return c
+		}
 	}
 
 	c := mustMakeColor(palette, hex)
-	ucg.byName[name] = c
+	log.Printf("New color %s/%s\n", name, hex)
 	ucg.byHex[hex] = c
+	ucg.byName[name] = c
 	return c
 }
 

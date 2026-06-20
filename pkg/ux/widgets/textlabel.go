@@ -34,7 +34,16 @@ func (t *TextLabel) SetColor(fg, bg color.Color) {
 
 func (t *TextLabel) Draw(canvas canvas.Canvas) {
 	if t.visible {
-		canvas.DrawText(t.x, t.y, t.text, t.Font, t.Color)
+		x := t.x
+		y := t.y
+
+		if t.align == ux.AlignCenter {
+			fw, fh := t.Font.Measure(t.text)
+			x -= fw / 2
+			y -= fh / 2
+		}
+
+		canvas.DrawText(x, y, t.text, t.Font, t.Color)
 	}
 }
 

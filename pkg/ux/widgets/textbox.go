@@ -1,8 +1,6 @@
 package widgets
 
 import (
-	"fmt"
-
 	"github.com/thirdmartini/gogui/pkg/ux"
 	"github.com/thirdmartini/gogui/pkg/ux/canvas"
 	"github.com/thirdmartini/gogui/pkg/ux/canvas/color"
@@ -75,9 +73,7 @@ func (t *TextBox) Draw(canvas canvas.Canvas) {
 			canvas.DrawLine(t.x, t.y+t.h, t.x+t.w, t.y+t.h, borderColor)
 		}
 
-		fmt.Printf("TextBox.Draw: %v\n", t.text)
 		canvas.DrawText(t.x, t.y+t.Font.Height, t.text, t.Font, textColor)
-
 	}
 }
 
