@@ -32,7 +32,8 @@ func (w *Window) Draw(canvas canvas.Canvas) {
 	if w.background != nil {
 		canvas.DrawImage(r.Min.X, r.Min.Y, w.background)
 	} else {
-		canvas.DrawRect(r.Min.X, r.Min.Y, r.Dx(), r.Dx(), themes.Default.Colors.Background, themes.Default.Colors.Background)
+		bgColor := themes.NewColor("backgeround", "#000000")
+		canvas.DrawRect(r.Min.X, r.Min.Y, r.Dx(), r.Dx(), bgColor, bgColor)
 	}
 
 	for _, widget := range w.Widgets {

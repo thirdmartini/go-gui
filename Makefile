@@ -15,3 +15,7 @@ rpi:
 run:
 	go run github.com/thirdmartini/gogui/cmd/demo
 .PHONY: run
+
+vnc:
+	/Applications/TigerVNC.app/Contents/MacOS/vncviewer localhost:9000 SendClipboard=false CursorType=system AlwaysCursor=true
+.PHONY: vnc

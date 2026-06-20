@@ -2,62 +2,10 @@ package themes
 
 import (
 	"fmt"
-	"image"
+	"log"
 
-	"github.com/thirdmartini/gogui/pkg/ux/canvas"
 	"github.com/thirdmartini/gogui/pkg/ux/canvas/color"
 )
-
-/*
-var (
-	ColorBackground color.Color
-	ColorBorder     color.Color
-	ColorForeground color.Color
-
-	ColorTextPrimary color.Color
-	ColorTextMuted   color.Color
-	ColorGraphAxis   []color.Color
-	ColorGraphTicks  color.Color
-
-	ColorMenuBackground color.Color
-
-	ColorWindowBackground color.Color
-)*/
-
-type SystemColors struct {
-	None       color.Color
-	Foreground color.Color
-	Background color.Color
-	Border     color.Color
-
-	TextPrimary color.Color
-	TextMuted   color.Color
-
-	MenuBackground   color.Color
-	WindowBackground color.Color
-}
-
-var Colors = SystemColors{}
-
-//var UserColors UserColorGroup
-
-func initSystemColors() {
-	// this is hackery for now
-	palette := canvas.NewGGCanvas(image.NewRGBA(image.Rect(0, 0, 1, 1))).ColorPalette()
-	Colors = SystemColors{
-		Foreground: palette.NewRGB8(255, 255, 255),
-		Background: palette.NewRGB8(0, 0, 0),
-		Border:     palette.NewRGB8(222, 222, 222),
-
-		TextPrimary: palette.NewRGB8(255, 255, 255),
-		TextMuted:   palette.NewRGB8(128, 128, 128),
-
-		MenuBackground:   palette.NewRGB8(0, 0, 0),
-		WindowBackground: palette.NewRGB8(0, 0, 0),
-	}
-	Default.Colors = &Colors
-
-}
 
 type ThemeColors map[string]string
 
@@ -87,9 +35,47 @@ func toColor(p color.Palette, hexColor string) color.Color {
 	return p.NewRGB8(0, 0, 0)
 }
 
-type UserColorGroup map[string]color.Color
+func mustMakeColor(p color.Palette, hexColor string) color.Color {
+	c := toColor(p, hexColor)
+	if c == nil {
+		log.Fatalf("no color [%s]", hexColor)
+	}
+	return c
+}
 
-func (ug UserColorGroup) GetColor(name string) color.Color {
-	col := ug[name]
-	return col
+type UserColorGroup struct {
+	byName map[string]color.Color
+	byHex  map[string]color.Color
+}
+
+func (ucg *UserColorGroup) GetColor(name string) color.Color {
+	if c, ok := ucg.byName[name]; ok {
+		return c
+	}
+	log.Fatalf("no color named [%s]", name)
+	return nil
+}
+
+func (ucg *UserColorGroup) NewColor(palette color.Palette, name string, hex string) color.Color {
+	if name != "" {
+		if c, ok := ucg.byName[name]; ok {
+			return c
+		}
+	}
+
+	if c, ok := ucg.byHex[hex]; ok {
+		return c
+	}
+
+	c := mustMakeColor(palette, hex)
+	ucg.byName[name] = c
+	ucg.byHex[hex] = c
+	return c
+}
+
+func NewColorsGroup() *UserColorGroup {
+	return &UserColorGroup{
+		byName: make(map[string]color.Color),
+		byHex:  make(map[string]color.Color),
+	}
 }

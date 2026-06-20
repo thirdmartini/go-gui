@@ -113,3 +113,4 @@ framebuffer_depth=32
 ```/boot/firmware/cmdline.txt
 console=serial0,115200 console=tty1 root=PARTUUID=87e0f569-02 rootfstype=ext4 fsck.repair=yes rootwait video=HDMI-A-1:320x1480-32@60
 ```
+

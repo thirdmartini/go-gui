@@ -53,26 +53,30 @@ func (t *TextBox) SetBackground(bgColor color.Color) {
 
 func (t *TextBox) Draw(canvas canvas.Canvas) {
 	if t.visible {
-		canvas.DrawRect(t.x, t.y, t.w, t.h, themes.Default.Colors.Background, themes.Default.Colors.Background)
+		bgColor := themes.NewColor("background", "#000000")
+		borderColor := themes.NewColor("border", "#FFFFFF")
+		textColor := themes.NewColor("text.primary", "#FFFFFF")
+
+		canvas.DrawRect(t.x, t.y, t.w, t.h, bgColor, bgColor)
 
 		if t.borderOpts&ux.BorderLeft == ux.BorderLeft {
-			canvas.DrawLine(t.x, t.y, t.x, t.y+t.h, themes.Default.Colors.Border)
+			canvas.DrawLine(t.x, t.y, t.x, t.y+t.h, borderColor)
 		}
 
 		if t.borderOpts&ux.BorderRight == ux.BorderRight {
-			canvas.DrawLine(t.x+t.w, t.y, t.x+t.w, t.y+t.h, themes.Default.Colors.Border)
+			canvas.DrawLine(t.x+t.w, t.y, t.x+t.w, t.y+t.h, borderColor)
 		}
 
 		if t.borderOpts&ux.BorderTop == ux.BorderTop {
-			canvas.DrawLine(t.x, t.y, t.x+t.w, t.y, themes.Default.Colors.Border)
+			canvas.DrawLine(t.x, t.y, t.x+t.w, t.y, borderColor)
 		}
 
 		if t.borderOpts&ux.BorderBottom == ux.BorderBottom {
-			canvas.DrawLine(t.x, t.y+t.h, t.x+t.w, t.y+t.h, themes.Default.Colors.Border)
+			canvas.DrawLine(t.x, t.y+t.h, t.x+t.w, t.y+t.h, borderColor)
 		}
 
 		fmt.Printf("TextBox.Draw: %v\n", t.text)
-		canvas.DrawText(t.x, t.y+t.Font.Height, t.text, t.Font, themes.Default.Colors.TextPrimary)
+		canvas.DrawText(t.x, t.y+t.Font.Height, t.text, t.Font, textColor)
 
 	}
 }

@@ -46,8 +46,8 @@ func main() {
 
 	font, _ := fonts.Load("assets/light/default.ttf", 30)
 
-	bt := widgets.NewButton(200, 200, 200, 40, ux.AlignLeft, "Click Me", font, themes.Default.Colors.TextPrimary)
-	bt.SetBorder(ux.BorderAll, themes.Default.Colors.TextPrimary)
+	bt := widgets.NewButton(200, 200, 200, 40, ux.AlignLeft, "Click Me", font, themes.NewColor("text.primary", "#FFFFFF"))
+	bt.SetBorder(ux.BorderAll, themes.NewColor("text.primary", "#FFFFFF"))
 
 	bt.OnClick = func() bool {
 		fmt.Printf("[[Button Clicked]]\n")
@@ -56,8 +56,12 @@ func main() {
 	}
 
 	mainWindow.AddWidget("button", bt)
-	mainWindow.AddWidget("ping", widgets.NewTextLabel(20, 20, ux.AlignLeft, "Click the button to exit", font, themes.Default.Colors.TextPrimary, themes.Default.Colors.Background))
+	mainWindow.AddWidget("ping", widgets.NewTextLabel(20, 20, ux.AlignLeft, "Click the button to exit", font,
+		themes.NewColor("text.primary", "#FFFFFF"),
+		themes.NewColor("background", "#000000")))
 
+	grokIcon := widgets.NewIconButton(100, 100, 96, 96, themes.LoadImage("grok.png"))
+	mainWindow.AddWidget("grok_icon", grokIcon)
 	// start event handler
 
 	dc := ux.NewDisplayController(mainDisplay, mainWindow)

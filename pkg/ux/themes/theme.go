@@ -5,24 +5,30 @@ import (
 	"image"
 	"os"
 	"path"
-	"strings"
 
 	"github.com/thirdmartini/gogui/pkg/ux/canvas/color"
 )
 
 type Theme struct {
-	Path       string
-	Colors     *SystemColors
-	UserColors UserColorGroup
-	Fonts      *FontCache
+	path       string
+	userColors *UserColorGroup
+	fonts      *FontCache
+	palette    color.Palette
+}
+
+// NewColor creates a new color object (or returns one from the color cache)
+// name assigns a human name to the color (like mybutton.background) and is optional
+// hex is the html formated hex color 9IE  #FF0000
+func (t *Theme) NewColor(name string, hex string) color.Color {
+	return t.userColors.NewColor(t.palette, name, hex)
 }
 
 func (t *Theme) GetColor(name string) color.Color {
-	return t.UserColors.GetColor(name)
+	return t.userColors.GetColor(name)
 }
 
 func (t *Theme) LoadImage(name string) image.Image {
-	imgPath := path.Join(t.Path, name)
+	imgPath := path.Join(t.path, name)
 	infile, err := os.Open(imgPath)
 	if err != nil {
 		return nil
@@ -40,10 +46,10 @@ func (t *Theme) LoadImage(name string) image.Image {
 
 func Load(themePath string, palette color.Palette) (*Theme, error) {
 	theme := &Theme{
-		Path:       themePath,
-		Colors:     &SystemColors{},
-		UserColors: make(UserColorGroup),
-		Fonts:      NewFontCache(),
+		path:       themePath,
+		palette:    palette,
+		userColors: NewColorsGroup(),
+		fonts:      NewFontCache(),
 	}
 
 	data, err := os.ReadFile(path.Join(themePath, "colors.json"))
@@ -55,41 +61,10 @@ func Load(themePath string, palette color.Palette) (*Theme, error) {
 	err = json.Unmarshal(data, &tc)
 
 	for k, v := range tc {
-		name := strings.ReplaceAll(k, ":", ".")
-		theme.UserColors[name] = toColor(palette, v)
+		theme.NewColor(k, v)
 	}
 
-	theme.Colors = Default.Colors
-
-	if c := theme.UserColors.GetColor("background"); c != nil {
-		theme.Colors.Background = c
-	}
-
-	if c := theme.UserColors.GetColor("foreground"); c != nil {
-		theme.Colors.Foreground = c
-	}
-
-	if c := theme.UserColors.GetColor("text.primary"); c != nil {
-		theme.Colors.TextPrimary = c
-	}
-
-	if c := theme.UserColors.GetColor("text.muted"); c != nil {
-		theme.Colors.TextMuted = c
-	}
-
-	if c := theme.UserColors.GetColor("window.background"); c != nil {
-		theme.Colors.WindowBackground = c
-	}
-
-	if c := theme.UserColors.GetColor("menu.background"); c != nil {
-		theme.Colors.MenuBackground = c
-	}
-
-	if c := theme.UserColors.GetColor("border"); c != nil {
-		theme.Colors.Border = c
-	}
-
-	data, err = os.ReadFile(path.Join(theme.Path, "fonts.json"))
+	data, err = os.ReadFile(path.Join(theme.path, "fonts.json"))
 	if err != nil {
 		return nil, err
 	}
@@ -104,8 +79,8 @@ func Load(themePath string, palette color.Palette) (*Theme, error) {
 	}
 
 	for k, v := range fontConfig {
-		font := path.Join(theme.Path, v.Font)
-		if err := theme.Fonts.LoadFont(k, font, v.Size); err != nil {
+		font := path.Join(theme.path, v.Font)
+		if err := theme.fonts.LoadFont(k, font, v.Size); err != nil {
 			return nil, err
 		}
 	}

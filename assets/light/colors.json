@@ -1,9 +1,11 @@
 {
 	"background": "#000000",
 	"foreground": "#FFFFFF",
-	"text:primary":"#FFFFFF",
-	"text:muted": "#C8C8C8",
+	"text.primary":"#FFFFFF",
+	"text.muted": "#C8C8C8",
 	"border":"#DEDEDE",
+	"menu.background":"#202000",
+
 
 	"graph:axis:1": "#6699ff",
 	"graph:axis:2": "#ff4d4d",
@@ -11,7 +13,6 @@
 	"graph:axis:4": "#006600",
 	"graph:axis:5": "#000000",
 	"graph:ticks": "#808080",
-	"menu:background":"#202000",
 
     "ignore": "#000000"
 }
