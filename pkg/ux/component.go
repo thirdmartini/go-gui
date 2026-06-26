@@ -13,6 +13,14 @@ type Component struct {
 	IsVisible bool
 }
 
+func (c *Component) Inside(x, y int) bool {
+	return c.R.Min.X <= x && x < c.R.Max.X && c.R.Min.Y <= y && y < c.R.Max.Y
+}
+
+func (c *Component) InsidePoint(point image.Point) bool {
+	return c.Inside(point.X, point.Y)
+}
+
 func (c *Component) X() int {
 	return c.R.Min.X
 }
@@ -42,8 +50,9 @@ func (c *Component) OnEvent(_ *Event) bool {
 
 func NewComponent(name string, r image.Rectangle) *Component {
 	return &Component{
-		Name: name,
-		R:    r,
+		Name:      name,
+		R:         r,
+		IsVisible: true,
 	}
 }
 

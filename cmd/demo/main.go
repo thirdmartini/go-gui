@@ -47,14 +47,14 @@ func main() {
 
 	font, _ := fonts.Load("assets/light/default.ttf", 30)
 
-	bt := widgets.NewButton(200, 200, 200, 40, ux.AlignLeft, "Click Me", font, themes.NewColor("text.primary", "#FFFFFF"))
-	bt.SetBorder(ux.BorderAll, themes.NewColor("text.primary", "#FFFFFF"))
+	bt := widgets.NewButton("clickme", image.Rect(200, 200, 200, 40), "Click Me")
+	//bt.SetBorder(ux.BorderAll, themes.NewColor("text.primary", "#FFFFFF"))
 
 	bt.OnClick = func() bool {
 		fmt.Printf("[[Button Clicked]]\n")
 		app.Terminate()
 		return true
-	}
+	}git s
 
 	mainWindow.AddWidget("button", bt)
 	mainWindow.AddWidget("ping", widgets.NewTextLabel(20, 20, ux.AlignLeft, "Click the button to exit", font,

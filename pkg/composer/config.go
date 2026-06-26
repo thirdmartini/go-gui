@@ -3,6 +3,7 @@ package composer
 import (
 	"encoding/json"
 	"fmt"
+	"image"
 	"os"
 
 	"github.com/thirdmartini/gogui/pkg/ux"
@@ -27,6 +28,10 @@ type ComponentDefinition struct {
 		Icon            string
 	}
 	Custom map[string]interface{} // Custom properties for use by external components can be put here
+}
+
+func (c ComponentDefinition) Rect() image.Rectangle {
+	return image.Rect(c.Properties.X, c.Properties.Y, c.Properties.X+c.Properties.Width, c.Properties.Y+c.Properties.Height)
 }
 
 // ComposerConfig defines the configuration for setting up the UI composer, including theme, displays, and components.

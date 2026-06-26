@@ -83,7 +83,7 @@
       }
     },
     {
-      "Name": "grok.0",
+      "Name": "button.0",
       "Type": "ux.widget.iconbutton",
       "Parent": "main2",
       "Properties": {
@@ -95,14 +95,15 @@
       }
     },
     {
-      "Name": "grok.1",
-      "Type": "ux.widget.iconbutton",
+      "Name": "button.1",
+      "Type": "ux.widget.button",
       "Parent": "main2",
       "Properties": {
         "X": 160,
         "Y": 50,
-        "Width": 96,
+        "Width": 120,
         "Height": 96,
+        "Text": "Button 2",
         "Icon": "grok.png"
       }
     }

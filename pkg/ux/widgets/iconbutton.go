@@ -69,15 +69,16 @@ func (b *IconButton) Draw(canvas canvas.Canvas) {
 
 	canvas.DrawRoundedRect(x, y, b.w, b.h, b.CornerRadius, b.BorderColor, fill)
 
-	if b.pressed {
-		canvas.DrawLine(x, y, x+b.w, y, b.ShadowColor)
-		canvas.DrawLine(x, y, x, y+b.h, b.ShadowColor)
-	} else {
-		canvas.DrawLine(x, y, x+b.w, y, b.HighlightColor)
-		canvas.DrawLine(x, y, x, y+b.h, b.HighlightColor)
-		canvas.DrawLine(x, y+b.h, x+b.w, y+b.h, b.ShadowColor)
-		canvas.DrawLine(x+b.w, y, x+b.w, y+b.h, b.ShadowColor)
-	}
+	/*
+		if b.pressed {
+			canvas.DrawLine(x, y, x+b.w, y, b.ShadowColor)
+			canvas.DrawLine(x, y, x, y+b.h, b.ShadowColor)
+		} else {
+			canvas.DrawLine(x, y, x+b.w, y, b.HighlightColor)
+			canvas.DrawLine(x, y, x, y+b.h, b.HighlightColor)
+			canvas.DrawLine(x, y+b.h, x+b.w, y+b.h, b.ShadowColor)
+			canvas.DrawLine(x+b.w, y, x+b.w, y+b.h, b.ShadowColor)
+		}*/
 
 	if b.icon != nil {
 		bounds := b.icon.Bounds()

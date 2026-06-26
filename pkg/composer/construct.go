@@ -2,7 +2,6 @@ package composer
 
 import (
 	"fmt"
-	"image"
 	"log"
 
 	"github.com/thirdmartini/gogui/pkg/ux"
@@ -12,7 +11,6 @@ import (
 
 // common construct for builtin components
 func (c *Composer) construct(def *ComponentDefinition) (interface{}, error) {
-	r := image.Rect(def.Properties.X, def.Properties.Y, def.Properties.Width, def.Properties.Height)
 
 	var parent ux.ContainerProvider
 	if def.Parent != "" {
@@ -27,16 +25,7 @@ func (c *Composer) construct(def *ComponentDefinition) (interface{}, error) {
 	// handle builtin type
 	switch def.Type {
 	case "ux.widget.button":
-		widget = widgets.NewButton(
-			def.Properties.X,
-			def.Properties.Y,
-			def.Properties.Width,
-			def.Properties.Height,
-			alignValue(def.Properties.Align),
-			def.Properties.Text,
-			themes.Font(def.Properties.Font),
-			themes.GetColor(def.Properties.ColorText),
-		)
+		widget = widgets.NewButton(def.Name, def.Rect(), def.Properties.Text)
 
 	case "ux.widget.iconbutton":
 		widget = widgets.NewIconButton(
@@ -59,10 +48,10 @@ func (c *Composer) construct(def *ComponentDefinition) (interface{}, error) {
 		)
 
 	case "ux.pager":
-		widget = ux.NewPager(def.Name, r)
+		widget = ux.NewPager(def.Name, def.Rect())
 
 	case "ux.window":
-		w := ux.NewWindow(r)
+		w := ux.NewWindow(def.Rect())
 
 		if def.Properties.Background != "" {
 			w.SetBackground(themes.LoadImage(def.Properties.Background))
