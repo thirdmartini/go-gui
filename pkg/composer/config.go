@@ -7,6 +7,8 @@ import (
 	"os"
 
 	"github.com/thirdmartini/gogui/pkg/ux"
+	"github.com/thirdmartini/gogui/pkg/ux/canvas/color"
+	"github.com/thirdmartini/gogui/pkg/ux/themes"
 )
 
 // ComponentDefinition represents the structure defining a UI component's type, name, parent, and associated properties.
@@ -26,12 +28,34 @@ type ComponentDefinition struct {
 		ColorBackground string
 		Background      string
 		Icon            string
+		Icons           []string
+		Colors          []string
 	}
 	Custom map[string]interface{} // Custom properties for use by external components can be put here
 }
 
 func (c ComponentDefinition) Rect() image.Rectangle {
 	return image.Rect(c.Properties.X, c.Properties.Y, c.Properties.X+c.Properties.Width, c.Properties.Y+c.Properties.Height)
+}
+
+func (c ComponentDefinition) Colors() []color.Color {
+	var colors []color.Color
+
+	for _, colorName := range c.Properties.Colors {
+		colors = append(colors, themes.GetColor(colorName))
+	}
+
+	return colors
+}
+
+func (c ComponentDefinition) Icons() []themes.Icon {
+	var icons []themes.Icon
+
+	for _, name := range c.Properties.Icons {
+		icons = append(icons, themes.GetIcon(name))
+	}
+
+	return icons
 }
 
 // ComposerConfig defines the configuration for setting up the UI composer, including theme, displays, and components.

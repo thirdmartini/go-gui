@@ -17,6 +17,8 @@
 	"progressbar.foreground": "#5B9BD5",
 	"progressbar.background": "#858585",
 
+	"togglebutton.off": "#858585",
+	"togglebutton.on": "#5B9BD5",
 
 	"_": "#000000"
 }

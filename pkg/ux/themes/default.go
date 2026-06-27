@@ -33,6 +33,10 @@ func LoadImage(name string) image.Image {
 	return Default.LoadImage(name)
 }
 
+func GetIcon(name string) Icon {
+	return Default.GetIcon(name)
+}
+
 func LoadFont(name string, path string, points float64) (*fonts.Font, error) {
 	err := Default.fonts.LoadFont(name, path, points)
 	if err != nil {

@@ -161,6 +161,21 @@
       "Custom": {
         "Progress": 25.0
       }
+    },
+    {
+      "Name": "togglebutton1",
+      "Type": "ux.widget.togglebutton",
+      "Parent": "panel.demo0",
+      "Properties": {
+        "X": 1200,
+        "Y": 50,
+        "Width": 50,
+        "Height": 50,
+        "Colors": ["togglebutton.off", "togglebutton.on"],
+        "Icons": ["lock_open", "lock"]
+      },
+      "Custom": {
+      }
     }
   ]
 }

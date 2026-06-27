@@ -36,6 +36,14 @@ func (c *Composer) construct(def *ComponentDefinition) (interface{}, error) {
 			themes.LoadImage(def.Properties.Icon),
 		)
 
+	case "ux.widget.togglebutton":
+		widget = widgets.NewToggleButton(
+			def.Name,
+			def.Rect(),
+			def.Colors(),
+			def.Icons(),
+		)
+
 	case "ux.widget.textlabel":
 		widget = widgets.NewTextLabel(
 			def.Properties.X,

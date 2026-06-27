@@ -26,6 +26,15 @@ func (c *Container) GetWidget(name string) (Widget, bool) {
 	return w, ok
 }
 
+func (c *Container) HandleEvent(event *Event) bool {
+	for _, w := range c.Widgets {
+		if w.OnEvent(event) {
+			return true
+		}
+	}
+	return false
+}
+
 func NewContainer() *Container {
 	return &Container{
 		Widgets: make(map[string]Widget),

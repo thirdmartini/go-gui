@@ -15,6 +15,7 @@ type Theme struct {
 	userColors *UserColorGroup
 	fonts      *FontCache
 	palette    color.Palette
+	icons      IconProvider
 }
 
 // NewColor creates a new color object (or returns one from the color cache)
@@ -26,6 +27,10 @@ func (t *Theme) NewColor(name string, hex string) color.Color {
 
 func (t *Theme) GetColor(name string) color.Color {
 	return t.userColors.GetColor(name)
+}
+
+func (t *Theme) GetIcon(name string) Icon {
+	return t.icons.GetIcon(name)
 }
 
 func (t *Theme) LoadImage(name string) image.Image {
@@ -86,6 +91,11 @@ func Load(themePath string, palette color.Palette) (*Theme, error) {
 		if err := theme.fonts.LoadFont(k, font, v.Size); err != nil {
 			return nil, err
 		}
+	}
+
+	theme.icons, err = NewIconFontProvider(path.Join(theme.path, "MaterialIcons-Regular"), 32)
+	if err != nil {
+		return nil, err
 	}
 
 	return theme, nil

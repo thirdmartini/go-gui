@@ -51,7 +51,7 @@ func main() {
 	//bt.SetBorder(ux.BorderAll, themes.NewColor("text.primary", "#FFFFFF"))
 
 	bt.OnClick = func() bool {
-		fmt.Printf("[[Button Clicked]]\n")
+		fmt.Printf("[[ToggleButton Clicked]]\n")
 		app.Terminate()
 		return true
 	}

@@ -41,12 +41,7 @@ func (w *Window) Draw(canvas canvas.Canvas) {
 }
 
 func (c *Window) OnEvent(event *Event) bool {
-	for _, w := range c.Widgets {
-		if w.OnEvent(event) {
-			return true
-		}
-	}
-	return false
+	return c.Container.HandleEvent(event)
 }
 
 func (w *Window) Visible(show bool) {

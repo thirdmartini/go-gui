@@ -17,6 +17,10 @@ type Panel struct {
 	backgroundColor color.Color
 }
 
+func (p *Panel) OnEvent(event *Event) bool {
+	return p.Container.HandleEvent(event)
+}
+
 func (p *Panel) Draw(canvas canvas.Canvas) {
 	if !p.visible {
 		return
