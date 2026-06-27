@@ -54,7 +54,7 @@ func main() {
 		fmt.Printf("[[Button Clicked]]\n")
 		app.Terminate()
 		return true
-	}git s
+	}
 
 	mainWindow.AddWidget("button", bt)
 	mainWindow.AddWidget("ping", widgets.NewTextLabel(20, 20, ux.AlignLeft, "Click the button to exit", font,

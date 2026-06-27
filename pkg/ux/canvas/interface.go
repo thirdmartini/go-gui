@@ -4,8 +4,20 @@ import (
 	"image"
 
 	"github.com/thirdmartini/gogui/pkg/ux/canvas/color"
+
 	"github.com/thirdmartini/gogui/pkg/ux/canvas/fonts"
 )
+
+const (
+	TextAlignTop    = 0x0
+	TextAlignBottom = 0x2
+)
+
+type TextBlock struct {
+	Content string
+	Color   color.Color
+	Font    *fonts.Font
+}
 
 type Surface interface {
 	Set(x, y int, c color.Color)
@@ -31,6 +43,8 @@ type Canvas interface {
 	DrawText(x, y int, text string, font *fonts.Font, fg color.Color)
 	DrawTextWrapped(x, y, w, s int, text string, font *fonts.Font, fg color.Color)
 	DrawTextCentered(x, y int, text string, font *fonts.Font, fg color.Color)
+
+	DrawTextBlock(x, y int, valign uint8, text TextBlock) int
 
 	DrawArc(x, y, r, w int, start, stop int, color color.Color, fill color.Color)
 	DrawEllipticalArc(x, y, rx, xy int, start, stop int, color color.Color, fill color.Color)

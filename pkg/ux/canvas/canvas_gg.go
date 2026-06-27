@@ -55,6 +55,26 @@ func (c *CanvasGG) DrawText(x, y int, text string, font *fonts.Font, fg color.Co
 	}
 }
 
+func (c *CanvasGG) DrawTextBlock(x, y int, align uint8, text TextBlock) int {
+	if text.Font != nil && text.Color != nil {
+		tw, th := text.Font.Measure(text.Content)
+		switch align {
+		case TextAlignTop:
+			y = y + th
+			c.setColor(text.Color)
+			c.gg.SetFontFace(text.Font.Face)
+			c.gg.DrawString(text.Content, float64(x), float64(y))
+		case TextAlignBottom:
+			c.setColor(text.Color)
+			c.gg.SetFontFace(text.Font.Face)
+			c.gg.DrawString(text.Content, float64(x), float64(y))
+		}
+
+		return tw
+	}
+	return 0
+}
+
 func (c *CanvasGG) DrawTextWrapped(x, y, w, s int, text string, font *fonts.Font, fg color.Color) {
 	if font.Face != nil {
 		c.setColor(fg)

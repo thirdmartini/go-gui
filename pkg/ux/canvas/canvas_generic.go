@@ -98,6 +98,13 @@ func (im *GenericCanvas) DrawText(x, y int, text string, font *fonts.Font, fg co
 	}
 }
 
+func (im *GenericCanvas) DrawTextBlock(x, y int, valign uint8, text TextBlock) int {
+	if text.Font != nil && text.Color != nil {
+		im.DrawText(x, y, text.Content, text.Font, text.Color)
+	}
+	return 0
+}
+
 func (c *GenericCanvas) DrawTextWrapped(x, y, w, s int, text string, font *fonts.Font, fg color.Color) {
 
 }
