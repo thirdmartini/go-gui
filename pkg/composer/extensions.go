@@ -3,6 +3,7 @@ package composer
 import (
 	"fmt"
 
+	"github.com/thirdmartini/gogui/pkg/log"
 	"github.com/thirdmartini/gogui/pkg/ux"
 )
 
@@ -11,6 +12,7 @@ type Constructor func(c *Composer, def *ComponentDefinition) (ux.Widget, error)
 var constructors = make(map[string]Constructor)
 
 func RegisterConstructor(name string, c Constructor) {
+	log.Debugf("Registering constructor [%s]\n", name)
 	constructors[name] = c
 }
 func GetConstructor(name string) (Constructor, error) {
@@ -18,5 +20,5 @@ func GetConstructor(name string) (Constructor, error) {
 		return c, nil
 	}
 
-	return nil, fmt.Errorf("no constructor for %s", name)
+	return nil, fmt.Errorf("no constructor for %s WHY?", name)
 }

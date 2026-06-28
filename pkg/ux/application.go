@@ -3,8 +3,9 @@ package ux
 import (
 	"fmt"
 	"image"
-	"github.com/thirdmartini/gogui/pkg/log"
 	"time"
+
+	"github.com/thirdmartini/gogui/pkg/log"
 
 	"github.com/thirdmartini/gogui/pkg/ux/canvas"
 	"github.com/thirdmartini/gogui/pkg/ux/themes"
@@ -24,6 +25,11 @@ type Application struct {
 	eventQueue chan *Event
 	ctrl       ApplicationController
 	interval   time.Duration
+
+	Stats struct {
+		RepaintCount uint64
+		RepaintTime  time.Duration
+	}
 }
 
 func (app *Application) PostEvent(ev *Event) {
@@ -54,6 +60,14 @@ func (app *Application) WithRefreshRate(hz uint) *Application {
 	return app
 }
 
+func (app *Application) repaint() {
+	s := time.Now()
+	app.ctrl.OnRepaint()
+	app.Stats.RepaintCount++
+	app.Stats.RepaintTime += time.Since(s)
+
+}
+
 func (app *Application) Run(ctrl ViewController, eventSources []EventListener) {
 
 	for idx := range eventSources {
@@ -66,12 +80,20 @@ func (app *Application) Run(ctrl ViewController, eventSources []EventListener) {
 		}()
 	}
 
+	ticker := time.NewTicker(time.Minute)
+
+	// Ensure resources are freed when the function exits
+	defer ticker.Stop()
+
 	app.ctrl = ctrl
 	for {
 		select {
 		// Screen update interval
 		case <-time.After(app.interval):
-			app.ctrl.OnRepaint()
+			app.repaint()
+
+		case <-ticker.C:
+			log.Debugf("REPAINT: %s / %d  avg: %s", app.Stats.RepaintTime, app.Stats.RepaintCount, app.Stats.RepaintTime/time.Duration(app.Stats.RepaintCount))
 
 		// Handle UX or application events
 		case ev, ok := <-app.eventQueue:
@@ -89,7 +111,7 @@ func (app *Application) Run(ctrl ViewController, eventSources []EventListener) {
 			}
 
 			if app.ctrl.OnEvent(ev) {
-				app.ctrl.OnRepaint()
+				app.repaint()
 			}
 		}
 	}
