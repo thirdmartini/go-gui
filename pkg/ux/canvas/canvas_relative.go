@@ -111,7 +111,7 @@ func (cr *RelativeCanvas) Child(x, y, w, h int) *RelativeCanvas {
 	return &RelativeCanvas{cr.canvas, x + cr.x, y + cr.y, w, h}
 }
 
-func NewCanvasRelative(c Canvas, x, y, w, h int) *RelativeCanvas {
+func NewRelativeCanvas(c Canvas, x, y, w, h int) *RelativeCanvas {
 	return &RelativeCanvas{c, x, y, w, h}
 }
 
