@@ -18,7 +18,7 @@ func (k *Keyboard) Listen(OnEvent func(ev *ux.Event)) error {
 
 		switch key {
 		case keyboard.KeyCtrlC:
-			OnEvent(ux.NewSystemEvent(ux.EventKindQuit))
+			OnEvent(ux.NewSystemEvent(ux.SysEventKindQuit))
 
 		case keyboard.KeyArrowRight:
 			OnEvent(ux.NewKeyPressEvent(ux.KeyPressRight))

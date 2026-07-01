@@ -9,6 +9,7 @@ import (
 	"github.com/thirdmartini/gogui/pkg/ux/canvas/fonts"
 )
 
+// CanvasGG uses the wonderful github.com/fogleman/gg library for drawing
 type CanvasGG struct {
 	gg *gg.Context
 }
@@ -176,7 +177,14 @@ func (c *CanvasGG) ColorPalette() color.Palette {
 }
 
 func (c *CanvasGG) Invalidate() {
+}
 
+func (c *CanvasGG) DrawStart() {
+	c.gg.Push()
+}
+
+func (c *CanvasGG) DrawEnd() {
+	c.gg.Pop()
 }
 
 func NewGGCanvas(im *image.RGBA) *CanvasGG {

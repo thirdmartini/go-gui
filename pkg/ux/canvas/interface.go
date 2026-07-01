@@ -28,9 +28,8 @@ type Surface interface {
 }
 
 type Canvas interface {
-	//SetColor(c color.Color)
-	//SetFillColor(c color.Color)
-	//SetFont(font *fonts.Font)
+	DrawStart()
+	DrawEnd()
 
 	Clear(color color.Color)
 
